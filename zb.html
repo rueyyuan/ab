@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- 网页浏览器标签页图标 (Favicon) -->
+    <link rel="icon" type="image/jpeg" href="ab.jpg">
+
+    <title>爱播的个人主页 | Welcome to Aibo's World</title>
+    <style>
+        :root {
+            --primary-color: #ff758c;
+            --secondary-color: #ff7eb3;
+            --bg-color: #faf7f8;
+            --card-bg: #ffffff;
+            --text-color: #2c3e50;
+            --text-light: #7f8c8d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* 顶部 Banner 区域 */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            text-align: center;
+            padding: 60px 20px 70px;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+
+        .avatar {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            border: 4px solid white;
+            object-fit: cover;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            margin-bottom: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .avatar:hover {
+            transform: scale(1.05);
+        }
+
+        .hero h1 {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .hero p {
+            font-size: 1rem;
+            opacity: 0.95;
+            margin-bottom: 20px;
+            word-break: break-word;
+        }
+
+        /* 快捷导航按钮 */
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            display: inline-block;
+            padding: 8px 18px;
+            background: rgba(255, 255, 255, 0.25);
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        /* 主内容区域 */
+        .container {
+            max-width: 850px;
+            margin: -30px auto 40px;
+            padding: 0 16px;
+        }
+
+        /* 通用卡片样式 */
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 25px 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.07);
+        }
+
+        .card h2 {
+            font-size: 1.3rem;
+            color: var(--primary-color);
+            margin-bottom: 16px;
+            border-left: 4px solid var(--primary-color);
+            padding-left: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* 简介卡片样式 */
+        .intro-box {
+            background: #fff9fa;
+            border-radius: 12px;
+            padding: 16px;
+            border: 1px dashed #ffb6c1;
+            margin-bottom: 15px;
+        }
+
+        .intro-title {
+            font-size: 1rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .intro-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .intro-list li {
+            display: flex;
+            align-items: flex-start;
+            font-size: 0.95rem;
+            color: #4A5568;
+            word-break: break-word;
+        }
+
+        .intro-list li span.icon {
+            margin-right: 8px;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        /* 可点击的账号链接标签 */
+        .mention-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            background: #ffe3e8;
+            padding: 2px 8px;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+            word-break: break-all;
+        }
+
+        .mention-link:hover {
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+        }
+
+        /* 标签列表 */
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .tag {
+            background-color: #fff0f3;
+            color: var(--primary-color);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        /* 相册列表 - 自适应网格 */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+        }
+
+        .gallery-item {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 12px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+        }
+
+        /* 视频专区样式 */
+        .video-item {
+            background: #fafafa;
+            border-radius: 12px;
+            padding: 15px;
+            border: 1px solid #f0f0f0;
+        }
+
+        .video-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .video-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        .video-tag {
+            background: #fff0f3;
+            color: var(--primary-color);
+            font-size: 0.8rem;
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+
+        .video-date {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-bottom: 12px;
+        }
+
+        /* Google Drive 嵌入视频自适应容器 */
+        .drive-video-container {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 比例 */
+            background-color: #000;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .drive-video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .video-note {
+            background: #ffffff;
+            border-left: 3px solid var(--primary-color);
+            padding: 10px 12px;
+            font-size: 0.88rem;
+            color: #555;
+            margin-top: 12px;
+            border-radius: 4px;
+        }
+
+        /* 社交按钮 */
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 22px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(255, 117, 140, 0.3);
+            transition: all 0.3s ease;
+            width: auto;
+            max-width: 100%;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(255, 117, 140, 0.4);
+        }
+
+        /* 页脚 */
+        footer {
+            text-align: center;
+            padding: 20px 15px;
+            color: var(--text-light);
+            font-size: 0.85rem;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 600px) {
+            .hero {
+                padding: 45px 15px 55px;
+                border-bottom-left-radius: 20px;
+                border-bottom-right-radius: 20px;
+            }
+
+            .avatar {
+                width: 100px;
+                height: 100px;
+            }
+
+            .hero h1 {
+                font-size: 1.6rem;
+            }
+
+            .hero p {
+                font-size: 0.95rem;
+            }
+
+            .container {
+                margin-top: -25px;
+                padding: 0 12px;
+            }
+
+            .card {
+                padding: 20px 15px;
+                border-radius: 14px;
+            }
+
+            .card h2 {
+                font-size: 1.18rem;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+
+            .gallery-item {
+                height: 130px;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 顶部 Banner 区域 -->
+    <header class="hero">
+        <img src="ab.jpg" alt="爱播的头像" class="avatar">
+        <h1>爱播</h1>
+        <p>✨ 捕捉生活中的小确幸 | 记录每一个动听时刻 ✨</p>
+        
+        <nav class="nav-buttons">
+            <a href="#about" class="nav-btn">关于她</a>
+            <a href="#videos" class="nav-btn">🎬 独家视频</a>
+            <a href="#gallery" class="nav-btn">📷 相册</a>
+        </nav>
+    </header>
+
+    <main class="container">
+
+        <!-- 板块 1：关于她 -->
+        <section class="card" id="about">
+            <h2>✨ 关于爱播</h2>
+            
+            <div class="intro-box">
+                <div class="intro-title">📢 个人说明书：</div>
+                <ul class="intro-list">
+                    <li><span class="icon">💩</span> 著名日常生活屁大点事儿分享家</li>
+                    <li><span class="icon">👑</span> 废话大赛总冠军 <strong>&amp;</strong> 熬夜大赛季军 🥉</li>
+                    <li><span class="icon">🪟</span> 单推后缀：𓂃ꕤ⋆🍑</li>
+                    <li><span class="icon">⏰</span> 出没时间：12:00 - 15:00 | 23:00 - 02:00</li>
+                    <li>
+                        <span class="icon">🏰</span> 主系统：
+                        <a href="https://v.douyin.com/uBT8ytErlss/" target="_blank" rel="noopener noreferrer" class="mention-link">@⋆𝓓𝓸.无限邂逅</a>
+                    </li>
+                    <li>
+                        <span class="icon">👑</span> 主管家：
+                        <a href="https://v.douyin.com/U8QZiq0adZc/" target="_blank" rel="noopener noreferrer" class="mention-link">@也也也也子ovo</a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="tags">
+                <span class="tag">🌟 宝藏歌声</span>
+                <span class="tag">🎵 音乐达人</span>
+                <span class="tag">📷 记录日常</span>
+                <span class="tag">💖 独家记忆</span>
+            </div>
+        </section>
+
+        <!-- 板块 2：为我唱的歌（Google Drive 视频嵌入） -->
+        <section class="card" id="videos">
+            <h2>🎬 爱播为你唱的歌</h2>
+            <p style="margin-bottom: 16px; color: var(--text-light); font-size: 0.9rem;">
+                这里收录了爱播专门为你录制和演唱的歌曲视频：
+            </p>
+
+            <div class="video-item">
+                <div class="video-header">
+                    <span class="video-title">🎥 演唱视频 (abv.mp4)</span>
+                    <span class="video-tag">云端视频</span>
+                </div>
+                <div class="video-date">📅 录制时间：爱播专属</div>
+                
+                <!-- 嵌入 Google Drive 视频 -->
+                <div class="drive-video-container">
+                    <iframe src="https://drive.google.com/file/d/1rWCt3gvHN50Gafp-wmQeQgAfkondd25h/preview" allow="autoplay" allowfullscreen></iframe>
+                </div>
+
+                <div class="video-note">
+                    💡 <strong>专属小记：</strong> 这是爱播为你录唱的视频，声音超级温柔！
+                </div>
+            </div>
+        </section>
+
+        <!-- 板块 3：精彩瞬间相册 -->
+        <section class="card" id="gallery">
+            <h2>📷 精彩瞬间</h2>
+            <div class="gallery-grid">
+                <img src="photo1.jpg" alt="照片 1" class="gallery-item">
+                <img src="photo2.jpg" alt="照片 2" class="gallery-item">
+                <img src="photo3.jpg" alt="照片 3" class="gallery-item">
+            </div>
+        </section>
+
+        <!-- 板块 4：关注爱播（抖音跳转） -->
+        <section class="card" style="text-align: center;">
+            <h2>🔗 关注爱播</h2>
+            <p style="margin-bottom: 20px; color: var(--text-light); font-size: 0.9rem;">点击下方按钮关注爱播的最新动态：</p>
+            <div class="social-links">
+                <a href="https://v.douyin.com/KzckiPQaasM/" target="_blank" rel="noopener noreferrer" class="btn">
+                    <svg style="width: 18px; height: 18px; fill: currentColor;" viewBox="0 0 24 24">
+                        <path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-4.245V2h-3.445v13.672a2.896 2.896 0 0 1-5.201 1.743l-.002-.001.002.001a2.895 2.895 0 0 1 3.183-4.51v-3.5a6.329 6.329 0 0 0-5.394 2.17A6.34 6.34 0 0 0 3.5 15.672c0 3.5 2.84 6.328 6.335 6.328 3.495 0 6.33-2.828 6.33-6.328V9.262a8.198 8.198 0 0 0 4.924 1.624V7.442a4.79 4.79 0 0 1-1.5-.756z"/>
+                    </svg>
+                    <span>跳转至抖音主页</span>
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>Made with ❤️ for 爱播 | Designed by 元</p>
+    </footer>
+
+</body>
+</html>
