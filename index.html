@@ -300,14 +300,18 @@
             margin-bottom: 12px;
         }
 
-        /* Google Drive 嵌入视频自适应容器 */
+        /* Google Drive 嵌入视频自适应容器（适配竖屏视频） */
         .drive-video-container {
             position: relative;
             width: 100%;
-            padding-top: 56.25%; /* 16:9 比例 */
+            max-width: 320px;
+            margin: 0 auto;
+            aspect-ratio: 9 / 16;
+            max-height: 70vh;
             background-color: #000;
-            border-radius: 10px;
+            border-radius: 12px;
             overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
 
         .drive-video-container iframe {
