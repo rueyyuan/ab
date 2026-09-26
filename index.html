@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- 网页浏览器标签页图标 (Favicon) -->
-    <link rel="icon" type="image/jpeg" href="ab.jpg">
+    <link rel="icon" type="image/jpeg" href="ab.jpeg">
 
     <title>爱播的个人主页 | Welcome to Aibo's World</title>
     <style>
@@ -57,6 +57,7 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
             margin-bottom: 15px;
             transition: transform 0.3s ease;
+            cursor: pointer;
         }
 
         .avatar:hover {
@@ -204,10 +205,47 @@
             font-weight: 500;
         }
 
-        /* 相册列表 - 自适应网格 */
+        /* 信件专区样式 */
+        .letter-content {
+            background: #fffdfd;
+            border: 1px solid #ffe3e8;
+            border-radius: 12px;
+            padding: 22px;
+            font-size: 0.96rem;
+            line-height: 1.85;
+            color: #333;
+        }
+
+        .letter-content p {
+            margin-bottom: 16px;
+            text-indent: 2em;
+        }
+
+        .letter-content p.no-indent {
+            text-indent: 0;
+        }
+
+        .poem-box {
+            background: #fff5f7;
+            border-left: 4px solid var(--primary-color);
+            padding: 14px 18px;
+            margin: 18px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .poem-box p {
+            text-indent: 0;
+            margin-bottom: 6px;
+        }
+
+        .poem-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* 相册列表 - 九宫格适配 */
         .gallery-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
             gap: 12px;
         }
 
@@ -216,12 +254,13 @@
             height: 160px;
             object-fit: cover;
             border-radius: 12px;
+            cursor: pointer;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .gallery-item:hover {
             transform: translateY(-4px);
-            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.15);
         }
 
         /* 视频专区样式 */
@@ -322,6 +361,59 @@
             box-shadow: 0 6px 18px rgba(255, 117, 140, 0.4);
         }
 
+        /* 图片大图预览弹窗 (Lightbox) */
+        .lightbox-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .lightbox-modal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 85vh;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            object-fit: contain;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .lightbox-modal.active .lightbox-content {
+            transform: scale(1);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            color: #ffffff;
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+            user-select: none;
+            line-height: 1;
+            transition: color 0.2s;
+        }
+
+        .lightbox-close:hover {
+            color: var(--primary-color);
+        }
+
         /* 页脚 */
         footer {
             text-align: center;
@@ -366,12 +458,12 @@
             }
 
             .gallery-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 8px;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 6px;
             }
 
             .gallery-item {
-                height: 130px;
+                height: 100px;
             }
 
             .btn {
@@ -384,12 +476,13 @@
 
     <!-- 顶部 Banner 区域 -->
     <header class="hero">
-        <img src="ab.jpg" alt="爱播的头像" class="avatar">
+        <img src="ab.jpeg" alt="爱播的头像" class="avatar zoomable-img">
         <h1>爱播</h1>
         <p>✨ 捕捉生活中的小确幸 | 记录每一个动听时刻 ✨</p>
         
         <nav class="nav-buttons">
             <a href="#about" class="nav-btn">关于她</a>
+            <a href="#letter" class="nav-btn">💌 写给小奈</a>
             <a href="#videos" class="nav-btn">🎬 独家视频</a>
             <a href="#gallery" class="nav-btn">📷 相册</a>
         </nav>
@@ -427,7 +520,51 @@
             </div>
         </section>
 
-        <!-- 板块 2：为我唱的歌（Google Drive 视频嵌入） -->
+        <!-- 板块 2：写给小奈的信 -->
+        <section class="card" id="letter">
+            <h2>💌 写给小奈：愿我一直都在</h2>
+            
+            <div class="letter-content">
+                <p class="no-indent"><strong>小奈姐姐：</strong></p>
+                
+                <p>今天27号是一个非常神秘又特别的日子（虽然早在24号的时候我就已经提笔开始为你准备这封信了）。今天是你满月的日子，我在这里由衷地祝你满月快乐！愿你在接下来的每一天里都能顺心如意，收获满满的快乐与温暖。</p>
+                
+                <p>如果让我静下心来仔细问一问自己，究竟是从什么时候开始、又是因为什么原因才会一直坚持来看你的直播，可能最开始的答案真的很纯粹，只是单纯觉得你的直播间氛围特别轻松自如，听你说话或者唱歌会让人放下整天的疲惫。然而随着日子一天天流逝，每天准时点开你的直播间，不知不觉中竟变成了一种生活里的习惯。再到后来，这种习惯又慢慢转化为一种深切的挂念——如果在某一天因为忙碌或者别的事情没能看到你开播，心里就会总觉得空落落的，仿佛这一天里少了某块非常重要的拼图。</p>
+
+                <p>其实回忆起最开始刷到你的那个夜晚，我本来只是抱着用手机随便找个唱歌主播的心情在平台里漫无目的地浏览着，却完全没想到会机缘巧合地与你相遇。你自然不做作的性格、清脆动听的歌声，在一瞬间就抓住了我的注意力。从那一刻起，我就萌生了想要多了解你一点、多看看你直播的想法。有时候，直播间里其实并没有什么惊天动地的大事发生，你可能只是安静地坐在镜头前跟观众们聊聊家常、唱几首随意的歌曲，或是带着大家打几局有趣的游戏。可对于坐在屏幕另一端的我来说，那些看似平淡无奇的日常瞬间，却在不知不觉中一点一点堆叠，变成了极其珍贵且独一无二的美好回忆。</p>
+
+                <p>在日复一日的陪伴里，我也越来越喜欢看你的直播。有时候看到你在镜头前笑得无比开心，我自己也会忍不住跟着嘴角上扬；看到你收到大家的支持与认可时喜悦的模样，我也总想着为你刷点礼物、送上一些鼓励，哪怕只是为你贡献一星半点的力量，只要能让你感到开心和被支持，我就觉得特别值得。或许，这就是我表达喜欢和支持一个人最直接、最真诚的方式吧。以前的我，可能觉得“陪伴是最长情的告白”这句话听起来有些俗套和抽象，可现在亲身走过了这段日子，我好像慢慢真正懂得了它的深意。真正的陪伴，并不一定非要时刻站在你的身边，也不非要弄得满城风雨、让全世界都知道我有多喜欢你。而是当你开心的时候，我愿意在屏幕后默默替你高兴；当你感到疲惫、受委屈或者难过的时候，我希望你知道，一直都有人在倾听，一直有人愿意无条件地陪着你。</p>
+
+                <p>愿你所得皆所愿，所遇皆温柔。愿你每一次为直播付出的汗水与努力都不被辜负，愿你每一次倾注的真心都能遇到同样懂得珍惜的人。</p>
+
+                <p>也许我的力量有限，不能帮你解决现实生活中的所有烦恼与压力，也不能向你保证未来的每一天都会一帆风顺、毫无挫折。但至少在我能够做到的时间里，在我还陪伴着你的时候，我愿意陪你走过这一段路，再多走一段路。如果有一天你觉得累了、倦了，就停下来好好休息一下吧。不用一直强迫自己保持坚强，也不用无时无刻都挂着笑容笑给所有人看。因为你不只是那个在镜头前闪闪发光、无所不能的明星主播，你也是一个会累、会难过、会偶感迷茫的普通女孩。在我心里，真正值得被大家深爱和珍惜的，从来都不是一个永不犯错、永远完美的机器，而是那个最真实的、会笑会哭、会开心也会有小情绪的你。</p>
+
+                <p>在这些日子的相处里，我也积累了很多想对你说的话，于是我把这些感情凝结成了两首小诗送给你，希望你能喜欢：</p>
+
+                <!-- 诗歌板块 1 -->
+                <div class="poem-box">
+                    <p>一屏一幕一相逢，</p>
+                    <p>一笑一语入心中。</p>
+                    <p>若问此生何所愿，</p>
+                    <p>愿做长夜一盏灯。</p>
+                </div>
+                
+                <!-- 诗歌板块 2 -->
+                <div class="poem-box">
+                    <p><strong>咲</strong>然一笑，便让我记了很久；</p>
+                    <p><strong>奈</strong>何人海太大，却偏偏遇见了你；</p>
+                    <p><strong>绪</strong>绪微风，吹不散我对你的喜欢。</p>
+                </div>
+                
+                <p>我知道，“永远”这两个字说出口非常简单。随口说一句“我会永远陪着你、支持你”，可能只需要花几秒钟的时间。可是我心里想说的“永远”，绝不是一句为了感动你或者安慰你才随口说出来的漂亮话。我更希望它代表的是一种坚定且沉稳的态度。只要我还喜欢听你唱歌，只要我还记得我们之间这些温暖的互动，只要未来还有机会点开你的直播间，我就会继续守在这里陪伴着你。或许在未来的日子里，我会因为学业或工作变得越来越忙碌；或许生活会发生很多无法预料的变化；也或许我们之间隔着的，自始至终都是这一块冰冷的电子屏幕。但是至少在此时此刻，我是非常真诚且无比珍惜能够认识你、了解你的这段岁月。</p>
+                
+                <p>所以，我真的想由衷地对你说一声谢谢。谢谢你出现在我的生活里，用你的歌声和笑容治愈了我很多疲惫的时刻；谢谢你让我拥有了一段每天都可以去期待、去珍惜的美好光阴。</p>
+
+                <p>只要你还在直播间里继续唱着歌、聊着天，我就愿意一直回来看看你。愿春风吹拂不散我们的缘分，愿花开依旧绚烂，愿我们有缘能够一直相见、一路同行。 ❤️</p>
+            </div>
+        </section>
+
+        <!-- 板块 3：为我唱的歌（Google Drive 视频嵌入） -->
         <section class="card" id="videos">
             <h2>🎬 爱播为你唱的歌</h2>
             <p style="margin-bottom: 16px; color: var(--text-light); font-size: 0.9rem;">
@@ -436,7 +573,7 @@
 
             <div class="video-item">
                 <div class="video-header">
-                    <span class="video-title">🎥 演唱视频 (abv.mp4)</span>
+                    <span class="video-title">🎥 演唱视频</span>
                     <span class="video-tag">云端视频</span>
                 </div>
                 <div class="video-date">📅 录制时间：爱播专属</div>
@@ -452,17 +589,23 @@
             </div>
         </section>
 
-        <!-- 板块 3：精彩瞬间相册 -->
+        <!-- 板块 4：精彩瞬间相册（9张 jpeg 照片） -->
         <section class="card" id="gallery">
             <h2>📷 精彩瞬间</h2>
             <div class="gallery-grid">
-                <img src="photo1.jpg" alt="照片 1" class="gallery-item">
-                <img src="photo2.jpg" alt="照片 2" class="gallery-item">
-                <img src="photo3.jpg" alt="照片 3" class="gallery-item">
+                <img src="photo1.jpeg" alt="照片 1" class="gallery-item zoomable-img">
+                <img src="photo2.jpeg" alt="照片 2" class="gallery-item zoomable-img">
+                <img src="photo3.jpeg" alt="照片 3" class="gallery-item zoomable-img">
+                <img src="photo4.jpeg" alt="照片 4" class="gallery-item zoomable-img">
+                <img src="photo5.jpeg" alt="照片 5" class="gallery-item zoomable-img">
+                <img src="photo6.jpeg" alt="照片 6" class="gallery-item zoomable-img">
+                <img src="photo7.jpeg" alt="照片 7" class="gallery-item zoomable-img">
+                <img src="photo8.jpeg" alt="照片 8" class="gallery-item zoomable-img">
+                <img src="photo9.jpeg" alt="照片 9" class="gallery-item zoomable-img">
             </div>
         </section>
 
-        <!-- 板块 4：关注爱播（抖音跳转） -->
+        <!-- 板块 5：关注爱播（抖音跳转） -->
         <section class="card" style="text-align: center;">
             <h2>🔗 关注爱播</h2>
             <p style="margin-bottom: 20px; color: var(--text-light); font-size: 0.9rem;">点击下方按钮关注爱播的最新动态：</p>
@@ -478,9 +621,42 @@
 
     </main>
 
+    <!-- 图片大图查看弹窗 -->
+    <div class="lightbox-modal" id="lightboxModal">
+        <span class="lightbox-close" id="lightboxClose">&times;</span>
+        <img class="lightbox-content" id="lightboxImg" alt="大图查看">
+    </div>
+
     <footer>
         <p>Made with ❤️ for 爱播 | Designed by 元</p>
     </footer>
+
+    <!-- 图片点击放大交互脚本 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const modal = document.getElementById('lightboxModal');
+            const modalImg = document.getElementById('lightboxImg');
+            const closeBtn = document.getElementById('lightboxClose');
+            const zoomableImgs = document.querySelectorAll('.zoomable-img');
+
+            zoomableImgs.forEach(img => {
+                img.addEventListener('click', () => {
+                    modal.classList.add('active');
+                    modalImg.src = img.src;
+                });
+            });
+
+            closeBtn.addEventListener('click', () => {
+                modal.classList.remove('active');
+            });
+
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                }
+            });
+        });
+    </script>
 
 </body>
 </html>
